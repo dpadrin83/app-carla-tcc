@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { getWeekEvents, getMonthEvents } from '@/lib/google/events'
+import { getSessionsAsEvents } from '@/lib/calendar/db-sessions'
 import { CalendarClient } from './CalendarClient'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -18,9 +19,16 @@ export default async function CalendarioPage({
   const view = params.view === 'month' ? 'month' : 'week'
   const force = params.refresh === '1'
 
-  const events = view === 'month'
-    ? await getMonthEvents(user.id, force)
-    : await getWeekEvents(user.id, force)
+  let events =
+    view === 'month'
+      ? await getMonthEvents(user.id, force)
+      : await getWeekEvents(user.id, force)
+
+  let source: 'google' | 'database' = 'google'
+  if (events.length === 0) {
+    events = await getSessionsAsEvents(view)
+    source = 'database'
+  }
 
   const { data: patients } = await supabase
     .from('patients')
@@ -34,28 +42,40 @@ export default async function CalendarioPage({
         <h1 className="text-2xl font-semibold">Calendário</h1>
         <div className="flex gap-2">
           <Link href={`/app/calendario?view=${view}&refresh=1`}>
-            <Button variant="outline" size="sm">Atualizar agora</Button>
+            <Button variant="outline" size="sm">
+              Atualizar agora
+            </Button>
           </Link>
-          <Link href={`/app/calendario?view=week`}>
-            <Button variant={view === 'week' ? 'default' : 'outline'} size="sm">Semana</Button>
+          <Link href="/app/calendario?view=week">
+            <Button variant={view === 'week' ? 'default' : 'outline'} size="sm">
+              Semana
+            </Button>
           </Link>
-          <Link href={`/app/calendario?view=month`}>
-            <Button variant={view === 'month' ? 'default' : 'outline'} size="sm">Mês</Button>
+          <Link href="/app/calendario?view=month">
+            <Button variant={view === 'month' ? 'default' : 'outline'} size="sm">
+              Mês
+            </Button>
           </Link>
         </div>
       </div>
 
       {events.length === 0 ? (
-        <p className="text-center text-muted-foreground py-12">
-          Nenhum evento encontrado.
-          <Link href="/app/conta/integracoes" className="block mt-2 text-primary hover:underline">
-            Conectar Google Agenda
-          </Link>
-        </p>
+        <div className="text-center text-muted-foreground py-12 space-y-2">
+          <p>Nenhuma sessão neste período.</p>
+          <p className="text-sm">
+            Cadastre sessões em Pacientes ou conecte o Google em{' '}
+            <Link href="/app/conta/integracoes" className="text-primary hover:underline">
+              Integrações
+            </Link>
+            .
+          </p>
+        </div>
       ) : (
         <CalendarClient
           events={events}
           patients={patients ?? []}
+          view={view}
+          source={source}
           linkEventId={params.link}
         />
       )}

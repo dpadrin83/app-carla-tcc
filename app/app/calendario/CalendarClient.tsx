@@ -3,16 +3,25 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { CalendarGrid } from '@/components/CalendarGrid'
 import { linkEventToPatient } from './actions'
 import type { EnrichedEvent } from '@/lib/google/events'
 
 type Props = {
   events: EnrichedEvent[]
   patients: { id: string; full_name: string }[]
+  view: 'week' | 'month'
+  source: 'google' | 'database'
   linkEventId?: string
 }
 
-export function CalendarClient({ events, patients, linkEventId }: Props) {
+export function CalendarClient({
+  events,
+  patients,
+  view,
+  source,
+  linkEventId,
+}: Props) {
   const [selected, setSelected] = useState<EnrichedEvent | null>(
     linkEventId ? events.find((e) => e.id === linkEventId) ?? null : null
   )
@@ -29,68 +38,93 @@ export function CalendarClient({ events, patients, linkEventId }: Props) {
     }
   }
 
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-2 space-y-2">
-        {events.map((ev) => (
-          <button
-            key={ev.id}
-            type="button"
-            onClick={() => setSelected(ev)}
-            className={`w-full text-left p-4 rounded-xl border transition-colors ${
-              selected?.id === ev.id ? 'border-primary bg-primary/5' : 'bg-card hover:border-primary/30'
-            }`}
-          >
-            <p className="font-medium text-sm">
-              {new Date(ev.start).toLocaleString('pt-BR', {
-                weekday: 'short',
-                day: '2-digit',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </p>
-            <p className="mt-1">{ev.summary}</p>
-            {ev.patientName && (
-              <p className="text-xs text-primary mt-1">{ev.patientName}</p>
-            )}
-          </button>
-        ))}
-      </div>
+  const canLink = Boolean(
+    selected && !selected.patientId && !selected.id.startsWith('db-session-')
+  )
 
-      <div className="bg-card border rounded-xl p-5 h-fit sticky top-24">
-        {!selected ? (
-          <p className="text-sm text-muted-foreground">Selecione um evento para ver detalhes.</p>
-        ) : (
-          <div className="space-y-4">
-            <h3 className="font-medium">{selected.summary}</h3>
-            {selected.patientId ? (
-              <div className="space-y-2 text-sm">
-                <p className="text-muted-foreground">Paciente: {selected.patientName}</p>
-                <Link href={`/app/pacientes/${selected.patientId}`}>
-                  <Button className="w-full" size="sm">Abrir ficha 360°</Button>
-                </Link>
-              </div>
-            ) : (
-              
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Vincular ao paciente:</p>
-                {patients.map((p) => (
-                  <Button
-                    key={p.id}
-                    variant="outline"
-                    size="sm"
-                    className="w-full justify-start"
-                    disabled={linking}
-                    onClick={() => handleLink(p.id)}
-                  >
-                    {p.full_name}
-                  </Button>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+  return (
+    <div className="space-y-4">
+      {source === 'database' && (
+        <p className="text-sm text-muted-foreground bg-muted/50 border rounded-lg px-4 py-3">
+          Exibindo sessões cadastradas no sistema. Para sincronizar com o Google Agenda, use{' '}
+          <Link href="/app/conta/integracoes" className="text-primary underline">
+            Integrações
+          </Link>
+          .
+        </p>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <CalendarGrid
+            view={view}
+            events={events}
+            selectedId={selected?.id ?? null}
+            onSelect={setSelected}
+          />
+        </div>
+
+        <aside className="bg-card border rounded-xl p-5 h-fit lg:sticky lg:top-24">
+          {!selected ? (
+            <p className="text-sm text-muted-foreground">
+              Selecione um horário no calendário para ver detalhes.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              <h3 className="font-medium">{selected.summary}</h3>
+              <p className="text-sm text-muted-foreground">
+                {new Date(selected.start).toLocaleString('pt-BR', {
+                  weekday: 'long',
+                  day: '2-digit',
+                  month: 'long',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
+              {selected.patientId ? (
+                <div className="space-y-2 text-sm">
+                  {selected.patientName && (
+                    <p className="text-muted-foreground">Paciente: {selected.patientName}</p>
+                  )}
+                  <Link href={`/app/pacientes/${selected.patientId}`}>
+                    <Button className="w-full" size="sm">
+                      Abrir ficha 360°
+                    </Button>
+                  </Link>
+                  {selected.id.startsWith('db-session-') && (
+                    <Link
+                      href={`/app/pacientes/${selected.patientId}/sessoes/${selected.id.replace('db-session-', '')}`}
+                    >
+                      <Button variant="outline" className="w-full" size="sm">
+                        Ver sessão
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              ) : canLink ? (
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Vincular ao paciente:</p>
+                  {patients.map((p) => (
+                    <Button
+                      key={p.id}
+                      variant="outline"
+                      size="sm"
+                      className="w-full justify-start"
+                      disabled={linking}
+                      onClick={() => handleLink(p.id)}
+                    >
+                      {p.full_name}
+                    </Button>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Evento do sistema — abra a ficha pelo menu Pacientes.
+                </p>
+              )}
+            </div>
+          )}
+        </aside>
       </div>
     </div>
   )

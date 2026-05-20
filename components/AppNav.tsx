@@ -13,6 +13,7 @@ const linksPsicologa = [
   { href: '/app/pacientes', label: 'Pacientes' },
   { href: '/app/tarefas', label: 'Tarefas' },
   { href: '/app/financeiro', label: 'Financeiro' },
+  { href: '/app/auditoria', label: 'Auditoria' },
 ]
 
 const linksAssistente = [

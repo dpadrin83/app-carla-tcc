@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { AppNav } from '@/components/AppNav'
 import { SkipLink } from '@/components/SkipLink'
 import { BrandLogo } from '@/components/BrandLogo'
+import { OnboardingBanner } from '@/components/OnboardingBanner'
 
 export default async function AppLayout({
   children,
@@ -47,6 +48,7 @@ export default async function AppLayout({
           </form>
         </div>
       </header>
+      <OnboardingBanner role={profile?.role ?? 'psicologa'} />
       <main id="main-content" className="flex-1">{children}</main>
     </div>
   )
