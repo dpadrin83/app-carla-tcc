@@ -10,15 +10,16 @@ export function QuickActions({ role }: { role: string }) {
   if (role === 'assistente') return null
 
   return (
-    <p className="text-sm text-muted-foreground flex flex-wrap gap-x-4 gap-y-1">
-      {linksPsicologa.map((item, i) => (
-        <span key={item.href} className="inline-flex items-center gap-4">
-          {i > 0 && <span className="text-border select-none" aria-hidden>·</span>}
-          <Link href={item.href} className="text-primary hover:underline font-medium">
-            {item.label}
-          </Link>
-        </span>
+    <div className="flex flex-wrap gap-2">
+      {linksPsicologa.map((item) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          className="inline-flex items-center rounded-full border border-primary/20 bg-accent/80 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+        >
+          {item.label}
+        </Link>
       ))}
-    </p>
+    </div>
   )
 }

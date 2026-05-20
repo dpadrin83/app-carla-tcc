@@ -51,7 +51,7 @@ export default async function HojePage({
         </p>
       )}
 
-      <SectionCard title="Agenda do dia">
+      <SectionCard title="Agenda do dia" description="Seus atendimentos de hoje">
         {agenda.length === 0 ? (
           <p className="text-muted-foreground text-sm leading-relaxed">
             Sem agendamentos hoje. Cadastre sessões na ficha do paciente ou conecte o Google
@@ -62,12 +62,9 @@ export default async function HojePage({
             .
           </p>
         ) : (
-          <ul className="divide-y divide-border -mx-1">
+          <ul className="space-y-2.5">
             {agenda.map((ev) => (
-              <li
-                key={ev.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-4 first:pt-0 last:pb-0 px-1"
-              >
+              <li key={ev.id} className="agenda-row">
                 <div className="flex items-baseline gap-4 min-w-0">
                   <span className="agenda-time">
                     {new Date(ev.start).toLocaleTimeString('pt-BR', {
@@ -105,13 +102,10 @@ export default async function HojePage({
 
       {pendencias.length > 0 && (
         <SectionCard title="Pendências">
-          <ul className="space-y-0 divide-y divide-border -mx-1">
+          <ul className="space-y-1.5">
             {pendencias.map((p) => (
               <li key={p.id}>
-                <Link
-                  href={p.href}
-                  className="block py-3.5 px-1 text-sm hover:text-primary transition-colors"
-                >
+                <Link href={p.href} className="list-row-link">
                   {p.label}
                 </Link>
               </li>
@@ -122,12 +116,12 @@ export default async function HojePage({
 
       {alertas.length > 0 && (
         <SectionCard title="Alertas" variant="alert">
-          <ul className="space-y-0 divide-y divide-amber-200/80 -mx-1">
+          <ul className="space-y-1.5">
             {alertas.slice(0, 5).map((a) => (
               <li key={a.id}>
                 <Link
                   href={a.href}
-                  className="block py-3.5 px-1 text-sm text-amber-900 hover:underline"
+                  className="list-row-link text-amber-950 hover:bg-amber-100/60"
                 >
                   {a.label}
                 </Link>

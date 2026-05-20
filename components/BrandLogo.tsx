@@ -7,6 +7,8 @@ type BrandLogoProps = {
   showName?: boolean
   priority?: boolean
   className?: string
+  /** Logo sobre fundo escuro (menu lateral) */
+  onDark?: boolean
 }
 
 const sizes = {
@@ -20,6 +22,7 @@ export function BrandLogo({
   showName = false,
   priority = false,
   className,
+  onDark = false,
 }: BrandLogoProps) {
   const s = sizes[size]
 
@@ -34,7 +37,12 @@ export function BrandLogo({
         className={cn(s.className, 'object-contain')}
       />
       {showName && (
-        <span className="font-semibold text-primary tracking-tight text-sm sm:text-base">
+        <span
+          className={cn(
+            'font-semibold tracking-tight text-sm sm:text-base',
+            onDark ? 'text-white' : 'text-primary'
+          )}
+        >
           {APP_NAME}
         </span>
       )}

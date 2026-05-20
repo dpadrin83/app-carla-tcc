@@ -19,7 +19,7 @@ function LoginForm() {
   )
 
   return (
-    <Card className="w-full max-w-[420px] border-border shadow-sm">
+    <Card className="w-full max-w-[420px] rounded-2xl border-border/70 shadow-[0_12px_40px_-12px_rgba(157,23,77,0.15)]">
       <CardHeader className="space-y-3 text-center pb-0">
         <div className="flex justify-center pt-2">
           <BrandLogo size="lg" priority />

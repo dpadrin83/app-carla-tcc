@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -67,7 +67,10 @@
   --border: #e5e5e5;
   --input: #e5e5e5;
   --ring: #9d174d;
-  --radius: 0.75rem;
+  --radius: 0.875rem;
+  --sidebar-from: #500724;
+  --sidebar-to: #9d174d;
+  --surface: #f4f4f5;
 }
 
 .dark {
@@ -95,27 +98,73 @@
     @apply font-sans;
   }
   .app-canvas {
-    @apply bg-background min-h-screen;
+    @apply bg-[var(--surface)] min-h-screen;
+  }
+  .app-sidebar {
+    background: linear-gradient(
+      165deg,
+      var(--sidebar-from) 0%,
+      #6b1138 42%,
+      var(--sidebar-to) 100%
+    );
+    box-shadow: 4px 0 24px -6px rgba(80, 7, 36, 0.35);
   }
   .surface-card {
-    @apply rounded-xl border border-border bg-card;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    @apply rounded-2xl border border-border/70 bg-card;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      0 8px 24px -8px rgba(157, 23, 77, 0.1);
+  }
+  .modern-card {
+    @apply rounded-2xl border border-border/60 bg-card overflow-hidden;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.05),
+      0 12px 32px -12px rgba(157, 23, 77, 0.12);
+  }
+  .modern-card--alert {
+    @apply border-amber-200/90 bg-gradient-to-br from-[#fffbeb] to-white;
+    box-shadow:
+      0 1px 2px rgba(180, 83, 9, 0.06),
+      0 12px 28px -12px rgba(180, 83, 9, 0.15);
+  }
+  .modern-card-header {
+    @apply flex items-center gap-3 px-6 pt-5 pb-0;
+  }
+  .modern-card-accent {
+    @apply h-6 w-1 shrink-0 rounded-full bg-primary;
+  }
+  .modern-card--alert .modern-card-accent {
+    @apply bg-amber-500;
+  }
+  .modern-card-title {
+    @apply text-base font-semibold tracking-tight text-foreground;
+  }
+  .modern-card-body {
+    @apply px-6 pb-6 pt-4;
   }
   .panel {
-    @apply rounded-xl border border-border bg-card p-6;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    @apply rounded-2xl border border-border/60 bg-card overflow-hidden;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.05),
+      0 12px 32px -12px rgba(157, 23, 77, 0.12);
   }
   .block-title {
-    @apply text-sm font-medium text-muted-foreground mb-4;
+    @apply text-base font-semibold tracking-tight text-foreground;
   }
   .agenda-time {
-    @apply text-sm font-semibold text-foreground tabular-nums min-w-[3rem];
+    @apply text-sm font-bold text-primary tabular-nums min-w-[3.25rem];
+  }
+  .agenda-row {
+    @apply flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl bg-muted/50 border border-border/50 px-4 py-3.5 transition-colors hover:bg-accent/40 hover:border-primary/15;
+  }
+  .list-row-link {
+    @apply block rounded-xl px-4 py-3.5 text-[15px] transition-colors hover:bg-accent/50 hover:text-primary;
   }
   .page-shell {
-    @apply px-5 py-8 md:px-8 max-w-3xl mx-auto w-full;
+    @apply px-5 py-8 md:px-10 lg:py-10 max-w-3xl mx-auto w-full;
   }
   .page-shell-wide {
-    @apply px-5 py-8 md:px-8 max-w-5xl mx-auto w-full;
+    @apply px-5 py-8 md:px-10 lg:py-10 max-w-6xl mx-auto w-full;
   }
   :focus-visible {
     outline: 2px solid var(--ring);

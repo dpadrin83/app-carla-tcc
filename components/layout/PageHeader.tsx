@@ -12,9 +12,11 @@ export function PageHeader({ title, subtitle, children, className }: PageHeaderP
     <header className={cn('mb-2', className)}>
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">{title}</h1>
+          <h1 className="text-[1.75rem] font-bold tracking-tight text-foreground leading-tight">
+            {title}
+          </h1>
           {subtitle && (
-            <p className="text-muted-foreground mt-1 text-[15px]">{subtitle}</p>
+            <p className="text-muted-foreground mt-1.5 text-base">{subtitle}</p>
           )}
         </div>
         {children ? <div className="flex shrink-0 gap-2">{children}</div> : null}
