@@ -9,7 +9,9 @@
     "lint": "eslint",
     "seed:dev": "node --env-file=.env.local scripts/seed-dev-user.mjs",
     "seed:carla": "SEED_EMAIL=carla@espacocarlatcc.com SEED_PASSWORD='Carla@2026' SEED_NAME=Carla SEED_ROLE=psicologa node --env-file=.env.local scripts/seed-dev-user.mjs",
-    "fix:carla": "SEED_EMAIL=carla@espacocarlatcc.com SEED_PASSWORD='Carla@2026' SEED_NAME=Carla SEED_ROLE=psicologa node --env-file=.env.local scripts/fix-user-password.mjs"
+    "fix:carla": "SEED_EMAIL=carla@espacocarlatcc.com SEED_PASSWORD='Carla@2026' SEED_NAME=Carla SEED_ROLE=psicologa node --env-file=.env.local scripts/fix-user-password.mjs",
+    "seed:demo": "node --env-file=.env.local scripts/seed-demo-data.mjs",
+    "seed:demo:clear": "SEED_DEMO_CLEAR=1 node --env-file=.env.local scripts/seed-demo-data.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

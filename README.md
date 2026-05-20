@@ -10,6 +10,15 @@
 6. Migrations extras (se faltar): cole `supabase/setup-pending-migrations.sql` e depois `supabase/migrations/0006_security_encryption_attachments.sql` no SQL Editor.
 7. `npm run dev` → http://localhost:3000/login
 
+### Dados fictícios (demonstração)
+
+```bash
+npm run seed:demo      # 8 pacientes, sessões hoje, tarefas, financeiro, comentários
+npm run seed:demo:clear   # remove só pacientes @demo.espacocarla.dev
+```
+
+Também cria assistente: `assistente@espacocarlatcc.com` / `Assistente@2026`
+
 **Login é e-mail/senha (Supabase).** Google no `.env` é só para ler a Agenda — pode ficar vazio.
 
 ### Variáveis de ambiente
