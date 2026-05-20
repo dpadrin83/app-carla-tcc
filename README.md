@@ -5,10 +5,10 @@
 1. `npm install`
 2. Copie `.env.example` → `.env.local` e preencha Supabase + Google.
 3. Rode as migrations em `supabase/migrations/` no SQL Editor do Supabase (0001 → 0005).
-4. **Usuário de teste (recomendado):** `npm run seed:dev` — cria `carla@atena.dev` / `AtenaDev2026!` com perfil `psicologa`.
-   - Ou manualmente: Authentication + linha em `profiles`.
-5. Migrations extras (se faltar): cole `supabase/setup-pending-migrations.sql` e depois `supabase/migrations/0006_security_encryption_attachments.sql` no SQL Editor.
-6. `npm run dev` → http://localhost:3000/login
+4. **Usuário de teste (dev):** `npm run seed:dev` — cria `carla@atena.dev` / `AtenaDev2026!` com perfil `psicologa`.
+5. **Usuário da cliente (produção):** rode `supabase/create-user-carla.sql` no SQL Editor — login `carla@espacocarlatcc.com` / `Carla@2026`.
+6. Migrations extras (se faltar): cole `supabase/setup-pending-migrations.sql` e depois `supabase/migrations/0006_security_encryption_attachments.sql` no SQL Editor.
+7. `npm run dev` → http://localhost:3000/login
 
 **Login é e-mail/senha (Supabase).** Google no `.env` é só para ler a Agenda — pode ficar vazio.
 

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:dev": "node --env-file=.env.local scripts/seed-dev-user.mjs"
+    "seed:dev": "node --env-file=.env.local scripts/seed-dev-user.mjs",
+    "seed:carla": "SEED_EMAIL=carla@espacocarlatcc.com SEED_PASSWORD='Carla@2026' SEED_NAME=Carla SEED_ROLE=psicologa node --env-file=.env.local scripts/seed-dev-user.mjs",
+    "fix:carla": "SEED_EMAIL=carla@espacocarlatcc.com SEED_PASSWORD='Carla@2026' SEED_NAME=Carla SEED_ROLE=psicologa node --env-file=.env.local scripts/fix-user-password.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

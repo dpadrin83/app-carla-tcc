@@ -55,7 +55,7 @@ export default async function PacientesPage() {
   }))
 
   return (
-    <div className="p-4 md:p-8 max-w-6xl mx-auto space-y-8">
+    <div className="page-shell-wide space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-semibold tracking-tight">Pacientes</h1>
         {isPsicologa && (

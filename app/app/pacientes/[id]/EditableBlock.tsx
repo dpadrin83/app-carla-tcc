@@ -85,16 +85,16 @@ export function EditableBlock({
   return (
     <div 
       className={`
-        relative flex flex-col h-full rounded-xl border bg-card text-card-foreground shadow-sm p-6 
+        relative flex flex-col h-full min-h-[140px] surface-card p-6 
         transition-all duration-200
-        ${isAlert ? 'border-amber-200/50 bg-amber-50/30 dark:bg-amber-950/10' : ''}
-        ${!isEditing && !readOnly ? 'hover:border-primary/30 cursor-text group' : ''}
-        ${isEditing ? 'ring-2 ring-primary/20 border-primary/50' : ''}
+        ${isAlert ? 'border-amber-200/70 bg-amber-50/50' : ''}
+        ${!isEditing && !readOnly ? 'hover:border-primary/35 hover:shadow-md cursor-text group' : ''}
+        ${isEditing ? 'ring-2 ring-primary/25 border-primary/40 shadow-md' : ''}
       `}
       onClick={!isEditing && !readOnly ? handleEdit : undefined}
     >
       <div className="flex items-center justify-between mb-3">
-        <h3 className={`font-medium text-sm ${isAlert ? 'text-amber-700 dark:text-amber-500' : 'text-muted-foreground'}`}>
+        <h3 className={`font-semibold text-sm tracking-tight ${isAlert ? 'text-amber-800' : 'text-foreground/80'}`}>
           {title}
         </h3>
         
@@ -138,7 +138,7 @@ export function EditableBlock({
             </div>
           </div>
         ) : (
-          <div className={`flex-1 whitespace-pre-wrap ${!value ? 'text-muted-foreground/50 italic text-sm' : 'text-base md:text-sm'}`}>
+          <div className={`flex-1 whitespace-pre-wrap leading-relaxed ${!value ? 'text-muted-foreground/60 italic text-sm' : 'text-[15px] text-foreground/90'}`}>
             {value || placeholder}
           </div>
         )}

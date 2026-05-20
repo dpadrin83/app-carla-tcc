@@ -49,30 +49,31 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.985 0.002 350);
+  --foreground: oklch(0.22 0.01 350);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.22 0.01 350);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.22 0.01 350);
   --primary: oklch(0.42 0.17 350);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.97 0.01 350);
+  --secondary-foreground: oklch(0.28 0.02 350);
+  --muted: oklch(0.96 0.008 350);
+  --muted-foreground: oklch(0.5 0.02 350);
+  --accent: oklch(0.97 0.02 350);
+  --accent-foreground: oklch(0.35 0.08 350);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: oklch(0.91 0.01 350);
+  --input: oklch(0.93 0.01 350);
   --ring: oklch(0.42 0.17 350);
+  --surface-accent: oklch(0.97 0.03 350);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.75rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -122,10 +123,32 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
   html {
     @apply font-sans;
+  }
+  .app-canvas {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--primary) 6%, transparent) 0%,
+      var(--background) 220px
+    );
+  }
+  .surface-card {
+    @apply rounded-xl border border-border/80 bg-card shadow-sm;
+  }
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+  }
+  .agenda-time {
+    @apply inline-flex min-w-[3.25rem] items-center justify-center rounded-lg bg-primary/10 px-2 py-1 text-sm font-semibold text-primary tabular-nums;
+  }
+  .page-shell {
+    @apply p-4 md:p-8 max-w-4xl mx-auto;
+  }
+  .page-shell-wide {
+    @apply p-4 md:p-8 max-w-6xl mx-auto;
   }
   :focus-visible {
     outline: 2px solid var(--ring);

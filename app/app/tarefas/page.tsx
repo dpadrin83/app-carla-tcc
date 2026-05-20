@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { TarefasClient } from './TarefasClient'
+import { PageHeader } from '@/components/layout/PageHeader'
+import { QuickActions } from '@/components/layout/QuickActions'
 
 export default async function TarefasPage() {
   const supabase = await createClient()
@@ -13,6 +15,12 @@ export default async function TarefasPage() {
     .from('admin_tasks')
     .select('*, patients(full_name)')
     .order('created_at', { ascending: false })
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
 
   const { data: profiles } = await supabase.from('profiles').select('id, full_name')
   const { data: patients } = await supabase
@@ -38,8 +46,15 @@ export default async function TarefasPage() {
   )
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
-      <h1 className="text-2xl font-semibold">Painel de Tarefas</h1>
+    <div className="page-shell-wide space-y-8">
+      <PageHeader
+        title="Painel de Tarefas"
+        subtitle="Organize NFs, contratos, lembretes e pendências do consultório."
+      />
+      <div>
+        <p className="section-label mb-3">Acesso rápido</p>
+        <QuickActions role={profile?.role ?? 'assistente'} />
+      </div>
       <TarefasClient
         tasks={tasks ?? []}
         profiles={profiles ?? []}

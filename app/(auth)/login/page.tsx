@@ -19,29 +19,29 @@ function LoginForm() {
   )
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="space-y-4 text-center">
-        <div className="flex justify-center">
+    <Card className="w-full max-w-md shadow-lg border-border/80 rounded-2xl">
+      <CardHeader className="space-y-4 text-center pb-2">
+        <div className="flex justify-center pt-2">
           <BrandLogo size="lg" priority />
         </div>
         {expired && (
-          <p className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <p className="text-sm text-amber-900 bg-amber-50 border border-amber-200 rounded-xl p-3">
             Sessão expirada por inatividade. Entre novamente.
           </p>
         )}
-        <CardDescription>
-          Acesso restrito ao consultório. Se você esqueceu a senha, contate o admin.
+        <CardDescription className="text-base">
+          Acesso restrito ao consultório. Esqueceu a senha? Contate o administrador.
         </CardDescription>
       </CardHeader>
       <form action={formAction}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5">
           {state?.error && (
-            <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">
+            <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
               {state.error}
             </div>
           )}
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-foreground">Email</Label>
             <Input
               id="email"
               name="email"
@@ -50,10 +50,11 @@ function LoginForm() {
               required
               disabled={isPending}
               autoComplete="email"
+              className="h-11 rounded-lg"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
+            <Label htmlFor="password" className="text-foreground">Senha</Label>
             <Input
               id="password"
               name="password"
@@ -61,11 +62,12 @@ function LoginForm() {
               required
               disabled={isPending}
               autoComplete="current-password"
+              className="h-11 rounded-lg"
             />
           </div>
         </CardContent>
-        <CardFooter>
-          <Button className="w-full" type="submit" disabled={isPending}>
+        <CardFooter className="pt-2">
+          <Button className="w-full h-11 rounded-lg text-base" type="submit" disabled={isPending}>
             {isPending ? 'Entrando...' : 'Entrar'}
           </Button>
         </CardFooter>
@@ -76,8 +78,15 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 bg-muted/30">
-      <Suspense fallback={<Card className="w-full max-w-md p-8 text-center text-muted-foreground">Carregando…</Card>}>
+    <div className="flex min-h-screen items-center justify-center p-4 app-canvas">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklch,var(--primary)_12%,transparent),transparent_55%)] pointer-events-none" />
+      <Suspense
+        fallback={
+          <Card className="w-full max-w-md p-8 text-center text-muted-foreground rounded-2xl">
+            Carregando…
+          </Card>
+        }
+      >
         <LoginForm />
       </Suspense>
     </div>

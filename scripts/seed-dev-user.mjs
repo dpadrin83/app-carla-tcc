@@ -43,16 +43,22 @@ const { data: created, error: createError } = await supabase.auth.admin.createUs
 })
 
 if (createError) {
-  if (!/already|registered|exists/i.test(createError.message)) {
-    console.error('Erro ao criar usuário:', createError.message)
-    process.exit(1)
-  }
   userId = await findUserIdByEmail(email)
   if (!userId) {
-    console.error('Usuário já existe mas não foi encontrado na listagem:', email)
+    console.error('Erro ao criar usuário:', createError.message)
+    console.error('Se criou via SQL, rode: npm run fix:carla')
     process.exit(1)
   }
-  console.log('Usuário já existe no Auth, vinculando profile…')
+  console.log('Usuário já existe — atualizando senha…')
+  const { error: updateError } = await supabase.auth.admin.updateUserById(userId, {
+    password,
+    email_confirm: true,
+  })
+  if (updateError) {
+    console.error('Erro ao atualizar senha:', updateError.message)
+    console.error('Rode: npm run fix:carla (recria o usuário corretamente)')
+    process.exit(1)
+  }
 } else {
   userId = created.user.id
   console.log('Usuário criado no Auth.')

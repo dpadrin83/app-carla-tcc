@@ -15,7 +15,7 @@ export default async function PerfilPendentePage() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (profile?.role === 'psicologa') redirect('/app/hoje')
   if (profile?.role === 'assistente') redirect('/app/tarefas')

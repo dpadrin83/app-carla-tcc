@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { patientsTable, sessionsTable } from '@/lib/supabase/role-tables'
 import { decryptPatientFields, decryptSessionFields } from '@/lib/patients/decrypt'
 import { AttachmentsPanel } from '@/components/AttachmentsPanel'
+import { PatientAvatar } from '@/components/layout/PatientAvatar'
 
 export default async function PacienteFichaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -78,28 +79,41 @@ export default async function PacienteFichaPage({ params }: { params: Promise<{ 
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="space-y-1">
-          <Link href="/app/pacientes" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-2">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Voltar
-          </Link>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">{patient.full_name}</h1>
-            <Badge variant={patient.active ? "default" : "secondary"}>
-              {patient.active ? 'Ativo' : 'Inativo'}
-            </Badge>
+      <div className="surface-card p-6 md:p-8">
+        <Link href="/app/pacientes" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Voltar para pacientes
+        </Link>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <PatientAvatar name={patient.full_name} size="lg" />
+          <div className="space-y-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">{patient.full_name}</h1>
+              <Badge variant={patient.active ? 'default' : 'secondary'} className="rounded-full">
+                {patient.active ? 'Ativo' : 'Inativo'}
+              </Badge>
+            </div>
+            <p className="text-sm text-muted-foreground">Ficha 360° — visão antes da sessão</p>
+            <div className="text-sm text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 pt-1">
+              {patient.phone && <span>{patient.phone}</span>}
+              {patient.email && <span>{patient.email}</span>}
+            </div>
           </div>
-          <div className="text-sm text-muted-foreground flex items-center gap-4">
-            {patient.phone && <span>{patient.phone}</span>}
-            {patient.email && <span>{patient.email}</span>}
-          </div>
+          {isPsicologa && (
+            <div className="sm:ml-auto flex flex-wrap gap-2">
+              <Link href={`/app/pacientes/${id}/sessoes/nova`}>
+                <Button size="sm" className="rounded-lg">Nova sessão</Button>
+              </Link>
+              <Link href={`/app/pacientes/${id}/sessoes`}>
+                <Button size="sm" variant="outline" className="rounded-lg">Histórico</Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* 8 Blocks Grid - Ficha 360 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <p className="section-label px-1">Blocos da ficha</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
         
         {/* Bloco 1: Resumo do caso */}
         <div className="lg:col-span-2 lg:row-span-2">
@@ -116,8 +130,8 @@ export default async function PacienteFichaPage({ params }: { params: Promise<{ 
 
         {/* Bloco 2: Última sessão */}
         <div className="lg:col-span-2">
-          <div className="h-full rounded-xl border bg-card text-card-foreground shadow-sm p-6 flex flex-col">
-            <h3 className="font-medium text-sm text-muted-foreground mb-3">2. Última Sessão</h3>
+          <div className="h-full surface-card p-6 flex flex-col min-h-[140px]">
+            <h3 className="font-semibold text-sm text-foreground/80 mb-3">2. Última Sessão</h3>
             {lastSession ? (
               <div className="flex-1 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-2">

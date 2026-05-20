@@ -3,22 +3,34 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Menu, X } from 'lucide-react'
+import {
+  Calendar,
+  ClipboardList,
+  Menu,
+  Shield,
+  Sparkles,
+  Users,
+  Wallet,
+  X,
+} from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import type { LucideIcon } from 'lucide-react'
 
-const linksPsicologa = [
-  { href: '/app/hoje', label: 'Hoje' },
-  { href: '/app/calendario', label: 'Calendário' },
-  { href: '/app/pacientes', label: 'Pacientes' },
-  { href: '/app/tarefas', label: 'Tarefas' },
-  { href: '/app/financeiro', label: 'Financeiro' },
-  { href: '/app/auditoria', label: 'Auditoria' },
+type NavItem = { href: string; label: string; icon: LucideIcon }
+
+const linksPsicologa: NavItem[] = [
+  { href: '/app/hoje', label: 'Hoje', icon: Sparkles },
+  { href: '/app/calendario', label: 'Calendário', icon: Calendar },
+  { href: '/app/pacientes', label: 'Pacientes', icon: Users },
+  { href: '/app/tarefas', label: 'Tarefas', icon: ClipboardList },
+  { href: '/app/financeiro', label: 'Financeiro', icon: Wallet },
+  { href: '/app/auditoria', label: 'Auditoria', icon: Shield },
 ]
 
-const linksAssistente = [
-  { href: '/app/tarefas', label: 'Tarefas' },
-  { href: '/app/pacientes', label: 'Pacientes' },
+const linksAssistente: NavItem[] = [
+  { href: '/app/tarefas', label: 'Tarefas', icon: ClipboardList },
+  { href: '/app/pacientes', label: 'Pacientes', icon: Users },
 ]
 
 function NavLinks({
@@ -26,27 +38,37 @@ function NavLinks({
   pathname,
   onNavigate,
   className,
+  vertical,
 }: {
-  links: { href: string; label: string }[]
+  links: NavItem[]
   pathname: string
   onNavigate?: () => void
   className?: string
+  vertical?: boolean
 }) {
   return (
-    <div className={className}>
-      {links.map((l) => (
-        <Link
-          key={l.href}
-          href={l.href}
-          onClick={onNavigate}
-          className={cn(
-            'text-sm font-medium text-muted-foreground hover:text-foreground block py-2 md:py-0',
-            pathname === l.href || pathname.startsWith(l.href + '/') ? 'text-foreground' : ''
-          )}
-        >
-          {l.label}
-        </Link>
-      ))}
+    <div className={cn(vertical ? 'flex flex-col gap-1' : 'flex items-center gap-1', className)}>
+      {links.map((l) => {
+        const active = pathname === l.href || pathname.startsWith(l.href + '/')
+        const Icon = l.icon
+        return (
+          <Link
+            key={l.href}
+            href={l.href}
+            onClick={onNavigate}
+            className={cn(
+              'inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+              vertical && 'w-full',
+              active
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            )}
+          >
+            <Icon className="h-4 w-4 shrink-0" aria-hidden />
+            {l.label}
+          </Link>
+        )
+      })}
     </div>
   )
 }
@@ -58,15 +80,15 @@ export function AppNav({ role }: { role: string }) {
 
   return (
     <>
-      <nav className="hidden md:flex gap-4">
-        <NavLinks links={links} pathname={pathname} className="flex gap-4" />
+      <nav className="hidden lg:flex">
+        <NavLinks links={links} pathname={pathname} />
       </nav>
 
       <Button
         type="button"
         variant="ghost"
         size="icon"
-        className="md:hidden"
+        className="lg:hidden"
         aria-label={open ? 'Fechar menu' : 'Abrir menu'}
         onClick={() => setOpen((v) => !v)}
       >
@@ -75,11 +97,16 @@ export function AppNav({ role }: { role: string }) {
 
       {open && (
         <div
-          className="md:hidden absolute left-0 right-0 top-full border-b bg-background shadow-sm z-20 px-4 py-3 flex flex-col gap-1"
+          className="lg:hidden absolute left-0 right-0 top-full border-b bg-card/95 backdrop-blur-sm shadow-md z-20 px-4 py-4"
           role="navigation"
           aria-label="Menu principal"
         >
-          <NavLinks links={links} pathname={pathname} onNavigate={() => setOpen(false)} />
+          <NavLinks
+            links={links}
+            pathname={pathname}
+            onNavigate={() => setOpen(false)}
+            vertical
+          />
         </div>
       )}
     </>

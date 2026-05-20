@@ -63,7 +63,7 @@ export function FinanceiroClient({
   const prevSaldo = prevTotals.in - prevTotals.out
 
   return (
-    <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-8">
+    <div className="page-shell space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">Financeiro</h1>

@@ -37,7 +37,7 @@ export default async function CalendarioPage({
     .order('full_name')
 
   return (
-    <div className="p-4 md:p-8 max-w-6xl mx-auto space-y-6">
+    <div className="page-shell-wide space-y-6">
       <div className="flex flex-wrap justify-between items-center gap-4">
         <h1 className="text-2xl font-semibold">Calendário</h1>
         <div className="flex gap-2">

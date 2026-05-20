@@ -256,13 +256,13 @@ export function TarefasClient({
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {columns.map((col) => (
           <div key={col.key} className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">{col.label}</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground px-1">{col.label}</h3>
             <div className="space-y-2 min-h-[120px]">
               {tasksForColumn(col.key).length === 0 && (
                 <p className="text-xs text-muted-foreground px-1">—</p>
               )}
               {tasksForColumn(col.key).map((t) => (
-                <div key={t.id} className="bg-card border rounded-lg p-3 text-sm space-y-2">
+                <div key={t.id} className="surface-card p-4 text-sm space-y-2 shadow-none">
                   <p className="font-medium">{t.title}</p>
                   {t.patients?.full_name && (
                     <p className="text-muted-foreground text-xs">{t.patients.full_name}</p>

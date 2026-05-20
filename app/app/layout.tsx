@@ -7,6 +7,7 @@ import { AppNav } from '@/components/AppNav'
 import { SkipLink } from '@/components/SkipLink'
 import { BrandLogo } from '@/components/BrandLogo'
 import { OnboardingBanner } from '@/components/OnboardingBanner'
+import { PatientAvatar } from '@/components/layout/PatientAvatar'
 
 export default async function AppLayout({
   children,
@@ -25,10 +26,10 @@ export default async function AppLayout({
     .single()
 
   return (
-    <div className="min-h-screen flex flex-col bg-muted/10">
+    <div className="min-h-screen flex flex-col app-canvas">
       <SkipLink />
-      <header className="sticky top-0 z-10 bg-background border-b px-4 md:px-6 py-3 flex items-center justify-between gap-4 relative">
-        <div className="flex items-center gap-4 md:gap-6">
+      <header className="sticky top-0 z-20 border-b border-border/70 bg-card/90 backdrop-blur-md px-4 md:px-6 py-3 flex items-center justify-between gap-4 relative shadow-sm">
+        <div className="flex items-center gap-3 md:gap-5 min-w-0">
           <Link
             href={profile?.role === 'assistente' ? '/app/tarefas' : '/app/hoje'}
             className="shrink-0"
@@ -39,17 +40,24 @@ export default async function AppLayout({
           </Link>
           <AppNav role={profile?.role ?? 'psicologa'} />
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground hidden sm:inline-block">
-            {profile?.full_name}
-          </span>
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="hidden sm:flex items-center gap-2 pr-1">
+            <PatientAvatar name={profile?.full_name ?? 'U'} size="sm" />
+            <span className="text-sm font-medium text-foreground max-w-[140px] truncate">
+              {profile?.full_name}
+            </span>
+          </div>
           <form action={logout}>
-            <Button variant="ghost" size="sm">Sair</Button>
+            <Button variant="outline" size="sm" className="rounded-lg">
+              Sair
+            </Button>
           </form>
         </div>
       </header>
       <OnboardingBanner role={profile?.role ?? 'psicologa'} />
-      <main id="main-content" className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1 pb-12">
+        {children}
+      </main>
     </div>
   )
 }

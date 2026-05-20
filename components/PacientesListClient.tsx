@@ -100,14 +100,14 @@ export function PacientesListClient({
             const age = getPatientAge(patient.birth_date)
             return (
               <Link key={patient.id} href={`/app/pacientes/${patient.id}`}>
-                <article className="bg-card border rounded-xl p-5 hover:border-primary/50 transition-colors group cursor-pointer h-full flex flex-col focus-within:ring-2 focus-within:ring-ring">
+                <article className="surface-card p-5 hover:border-primary/40 hover:shadow-md transition-all group cursor-pointer h-full flex flex-col focus-within:ring-2 focus-within:ring-ring">
                   <div className="flex items-center gap-3 mb-4">
-                    <div
-                      className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium shrink-0"
+                    <span
+                      className="h-11 w-11 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold shrink-0 ring-2 ring-primary/10"
                       aria-hidden
                     >
                       {patient.full_name.charAt(0).toUpperCase()}
-                    </div>
+                    </span>
                     <div className="min-w-0">
                       <h3 className="font-medium text-base group-hover:text-primary transition-colors line-clamp-1">
                         {patient.full_name}

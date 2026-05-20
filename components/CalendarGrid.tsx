@@ -51,7 +51,7 @@ export function CalendarGrid({ view, events, selectedId, onSelect }: Props) {
               role="gridcell"
               className={cn(
                 'min-h-[140px] rounded-xl border bg-card p-2 flex flex-col',
-                isToday(day) && 'border-primary ring-1 ring-primary/20'
+                isToday(day) && 'border-primary/50 bg-primary/[0.06] ring-1 ring-primary/15'
               )}
             >
               <p
@@ -122,7 +122,7 @@ export function CalendarGrid({ view, events, selectedId, onSelect }: Props) {
               className={cn(
                 'min-h-[72px] rounded-lg border p-1 text-left',
                 inMonth ? 'bg-card' : 'bg-muted/30 opacity-60',
-                isToday(day) && inMonth && 'border-primary ring-1 ring-primary/20'
+                isToday(day) && inMonth && 'border-primary/50 bg-primary/[0.06] ring-1 ring-primary/15'
               )}
             >
               <p
