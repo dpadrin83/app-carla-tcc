@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Espaço Carla TCC — Preview visual (HTML estático)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --fg: #171717;
+      --muted: #737373;
+      --border: #e5e5e5;
+      --primary: #9d174d;
+      --primary-hover: #831843;
+      --primary-fg: #ffffff;
+      --accent-soft: #fdf2f8;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+      --amber-text: #b45309;
+      --radius: 12px;
+      --shadow: 0 1px 2px rgba(0,0,0,.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+    .preview-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #171717;
+      color: #fafafa;
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .preview-bar span { opacity: .7; margin-right: 8px; }
+    .preview-bar button {
+      background: #404040;
+      border: none;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    .preview-bar button.active { background: var(--primary); }
+    .screen { display: none; min-height: calc(100vh - 48px); }
+    .screen.active { display: block; }
+    .login-wrap {
+      min-height: calc(100vh - 48px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: #f5f5f5;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 420px;
+    }
+    .card-header { padding: 28px 28px 0; text-align: center; }
+    .card-header h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }
+    .card-header p { color: var(--muted); font-size: 0.875rem; margin-top: 8px; }
+    .card-body { padding: 24px 28px; }
+    .card-footer { padding: 0 28px 28px; }
+    label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 6px; }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(157, 23, 77, 0.15);
+    }
+    .field { margin-bottom: 16px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px 16px;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 48px;
+      z-index: 50;
+    }
+    .logo { font-weight: 600; font-size: 1.125rem; color: var(--primary); }
+    .nav { display: flex; gap: 20px; }
+    .nav a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; cursor: pointer; }
+    .nav a:hover, .nav a.active { color: var(--fg); }
+    .user-meta { font-size: 0.8125rem; color: var(--muted); }
+    .main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 48px; }
+    h2.page-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 4px; }
+    .subtitle { color: var(--muted); margin-bottom: 28px; }
+    .block-title { font-size: 0.875rem; font-weight: 500; color: var(--muted); margin-bottom: 12px; }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .agenda-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .agenda-item:last-child { border-bottom: none; }
+    .time { font-weight: 500; min-width: 52px; }
+    .agenda-item a { color: var(--primary); text-decoration: none; font-size: 0.875rem; white-space: nowrap; }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: #f5f5f5;
+      color: var(--muted);
+    }
+    .badge-amber {
+      background: var(--amber-bg);
+      color: var(--amber-text);
+      border: 1px solid var(--amber-border);
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .patient-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: pointer;
+    }
+    .patient-card:hover { border-color: rgba(157, 23, 77, 0.4); }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .ficha-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) { .ficha-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .ficha-grid { grid-template-columns: 1fr; } }
+    .ficha-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      min-height: 140px;
+    }
+    .ficha-block.span-2 { grid-column: span 2; }
+    .ficha-block.span-2-row { grid-row: span 2; min-height: 296px; }
+    @media (max-width: 900px) {
+      .ficha-block.span-2, .ficha-block.span-2-row {
+        grid-column: span 2;
+        grid-row: span 1;
+        min-height: 140px;
+      }
+    }
+    @media (max-width: 520px) { .ficha-block.span-2 { grid-column: span 1; } }
+    .ficha-block h4 { font-size: 0.8125rem; color: var(--muted); font-weight: 500; margin-bottom: 10px; }
+    .ficha-block.alert { background: var(--amber-bg); border-color: var(--amber-border); }
+    .ficha-block.alert h4 { color: var(--amber-text); }
+    .placeholder { color: #a3a3a3; font-style: italic; font-size: 0.875rem; }
+    .tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--border); margin-top: 40px; flex-wrap: wrap; }
+    .tabs button {
+      background: none;
+      border: none;
+      padding: 12px 0;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tabs button.active { color: var(--fg); border-bottom-color: var(--primary); }
+    .tab-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 40px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .note { max-width: 420px; margin: 16px auto 0; font-size: 0.75rem; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body>
+
+  <nav class="preview-bar">
+    <span>Preview Espaço Carla TCC — duplo clique neste arquivo</span>
+    <button type="button" class="active" data-screen="login">Login</button>
+    <button type="button" data-screen="hoje">Hoje</button>
+    <button type="button" data-screen="pacientes">Pacientes</button>
+    <button type="button" data-screen="ficha">Ficha 360°</button>
+  </nav>
+
+  <section id="login" class="screen active">
+    
+    <div class="login-wrap">
+      <div class="card">
+        
+        <div class="card-header">
+          <h1>Espaço Carla TCC</h1>
+          <p>Acesso restrito ao consultório. Se você esqueceu a senha, contate o admin.</p>
+        </div>
+        <div class="card-body">
+          
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="seu@email.com" />
+          </div>
+          <div class="field">
+            <label for="senha">Senha</label>
+            <input id="senha" type="password" />
+          
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="button" class="btn" onclick="showScreen('hoje')">Entrar (preview)</button>
+          <p class="note">Só navega entre telas. O app real usa Supabase em localhost:3000.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hoje" class="screen">
+    <header class="header">
+      
+      
+      <div class="logo">Espaço Carla TCC</div>
+      <nav class="nav">
+        <a class="active">Hoje</a>
+        <a onclick="showScreen('pacientes')">Pacientes</a>
+        <a>Tarefas</a>
+      </nav>
+      <span class="user-meta">Carla · psicóloga</span>
+    </header>
+    <main class="main">
+      <h2 class="page-title">Bom dia, Carla</h2>
+      <p class="subtitle">O que precisa da sua atenção hoje?</p>
+      <p class="block-title">Agenda do dia</p>
+      <div class="panel">
+        <div class="agenda-item">
+          <span class="time">09:00</span>
+          <span>João da Silva</span>
+          <a href="#" onclick="showScreen('ficha');return false">Abrir ficha →</a>
+        </div>
+        <div class="agenda-item">
+          <span class="time">10:30</span>
+          <span>Maria Santos</span>
+          <a href="#" onclick="showScreen('ficha');return false">Abrir ficha →</a>
+        </div>
+        <div class="agenda-item">
+          <span class="time">14:00</span>
+          <span>Pedro Oliveira</span>
+          <a href="#" onclick="showScreen('ficha');return false">Abrir ficha →</a>
+        </div>
+      </div>
+      <p class="block-title">Pendências</p>
+      
+      <div class="panel">
+        <div class="agenda-item">
+          <span>Sessão de ontem sem evolução — Maria Santos</span>
+          <span class="badge badge-amber">Urgente</span>
+        </div>
+        <div class="agenda-item">
+          <span>Comentário da assistente sobre NF — João</span>
+          <span class="badge">Novo</span>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <section id="pacientes" class="screen">
+    <header class="header">
+      <div class="logo">Espaço Carla TCC</div>
+      <nav class="nav">
+        <a onclick="showScreen('hoje')">Hoje</a>
+        <a class="active">Pacientes</a>
+        <a>Tarefas</a>
+      </nav>
+      <span class="user-meta">Carla · psicóloga</span>
+    </header>
+    <main class="main">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+        <div>
+          <h2 class="page-title">Pacientes</h2>
+          <p class="subtitle" style="margin:0">3 ativos</p>
+        </div>
+        <button class="btn" style="width:auto;padding:10px 20px;" onclick="showScreen('ficha')">+ Novo paciente</button>
+      </div>
+      <div class="grid-3">
+        <div class="patient-card" onclick="showScreen('ficha')">
+          
+          
+          <div class="avatar">J</div>
+          <strong>João da Silva</strong>
+          <p style="font-size:0.8125rem;color:var(--muted);margin-top:4px;">Ativo</p>
+          <span class="badge" style="margin-top:12px;">Em dia</span>
+        </div>
+        <div class="patient-card" onclick="showScreen('ficha')">
+          <div class="avatar">M</div>
+          <strong>Maria Santos</strong>
+          <p style="font-size:0.8125rem;color:var(--muted);margin-top:4px;">Ativo</p>
+          <span class="badge badge-amber" style="margin-top:12px;">Sem sessão há 3 sem.</span>
+        </div>
+        <div class="patient-card" onclick="showScreen('ficha')">
+          <div class="avatar">P</div>
+          <strong>Pedro Oliveira</strong>
+          <p style="font-size:0.8125rem;color:var(--muted);margin-top:4px;">Ativo</p>
+          <span class="badge" style="margin-top:12px;">Em dia</span>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <section id="ficha" class="screen">
+    <header class="header">
+      <div class="logo">Espaço Carla TCC</div>
+      <nav class="nav">
+        <a onclick="showScreen('hoje')">Hoje</a>
+        <a class="active" onclick="showScreen('pacientes')">Pacientes</a>
+        <a>Tarefas</a>
+      </nav>
+      <span class="user-meta">Carla · psicóloga</span>
+    </header>
+    <main class="main">
+      <p style="font-size:0.875rem;color:var(--muted);margin-bottom:8px;">
+        <a href="#" style="color:var(--muted);" onclick="showScreen('pacientes');return false">← Voltar</a>
+      </p>
+      <h2 class="page-title">João da Silva <span class="badge">Ativo</span></h2>
+      <p class="subtitle">(11) 99999-9999 · joao@email.com</p>
+
+      <div class="ficha-grid">
+        
+        <div class="ficha-block span-2 span-2-row">
+          <h4>1. Resumo do caso</h4>
+          <p>Paciente em TCC para ansiedade social. Iniciou há 4 meses. Boa adesão às tarefas de casa.</p>
+        </div>
+        <div class="ficha-block">
+          <h4>2. Última sessão</h4>
+          <p><strong>15/05/2026</strong> — Realizada</p>
+          <p style="font-size:0.875rem;color:var(--muted);margin-top:8px;">Hierarquia de exposição...</p>
+        </div>
+        <div class="ficha-block">
+          <h4>3. Medicação atual</h4>
+          <p class="placeholder">Clique para adicionar</p>
+        </div>
+        <div class="ficha-block">
+          <h4>4. Tarefa combinada</h4>
+          <p>Registrar pensamentos automáticos 1x ao dia.</p>
+        </div>
+        <div class="ficha-block">
+          <h4>5. Pauta sugerida</h4>
+          <p>Revisar registro e planejar exposição nível 2.</p>
+        </div>
+        <div class="ficha-block alert">
+          <h4>6. Riscos / alertas</h4>
+          <p>Contato de emergência pendente.</p>
+        </div>
+        
+        <div class="ficha-block">
+          <h4>7. Próximo foco terapêutico</h4>
+          <p>Exposição interoceptiva gradual.</p>
+        </div>
+        <div class="ficha-block">
+          <h4>8. Administrativo</h4>
+          <p style="font-size:0.875rem;"><span style="color:var(--muted)">Sessão:</span> R$ 280 · Pix</p>
+          <p style="font-size:0.875rem;margin-top:8px;"><span style="color:var(--muted)">Emergência:</span> Ana (mãe)</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button type="button" class="active">Sessões</button>
+        <button type="button">Tarefas admin</button>
+        <button type="button">Anexos</button>
+        <button type="button">Financeiro</button>
+        <button type="button">Comentários</button>
+      </div>
+      <div class="tab-panel">Abas em desenvolvimento no app Next.js.
+      
+      </div>
+    </main>
+  </section>
+
+  <script>
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(function (el) {
+        el.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.preview-bar button').forEach(function (btn) {
+        btn.classList.toggle('active', btn.dataset.screen === id);
+      });
+      window.scrollTo(0, 0);
+    }
+    document.querySelectorAll('.preview-bar button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        showScreen(btn.dataset.screen);
+      });
+    });
+  </script>
+</body>
+</html>
