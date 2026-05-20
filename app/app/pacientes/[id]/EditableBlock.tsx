@@ -85,16 +85,16 @@ export function EditableBlock({
   return (
     <div 
       className={`
-        relative flex flex-col h-full min-h-[140px] surface-card p-6 
-        transition-all duration-200
-        ${isAlert ? 'border-amber-200/70 bg-amber-50/50' : ''}
-        ${!isEditing && !readOnly ? 'hover:border-primary/35 hover:shadow-md cursor-text group' : ''}
-        ${isEditing ? 'ring-2 ring-primary/25 border-primary/40 shadow-md' : ''}
+        relative flex flex-col h-full min-h-[140px] panel
+        transition-colors
+        ${isAlert ? 'bg-[#fffbeb] border-[#fde68a]' : ''}
+        ${!isEditing && !readOnly ? 'hover:border-primary/25 cursor-text group' : ''}
+        ${isEditing ? 'ring-2 ring-primary/15 border-primary/30' : ''}
       `}
       onClick={!isEditing && !readOnly ? handleEdit : undefined}
     >
       <div className="flex items-center justify-between mb-3">
-        <h3 className={`font-semibold text-sm tracking-tight ${isAlert ? 'text-amber-800' : 'text-foreground/80'}`}>
+        <h3 className={`text-sm font-medium ${isAlert ? 'text-amber-800' : 'text-muted-foreground'}`}>
           {title}
         </h3>
         

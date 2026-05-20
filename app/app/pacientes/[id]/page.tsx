@@ -79,7 +79,7 @@ export default async function PacienteFichaPage({ params }: { params: Promise<{ 
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
-      <div className="surface-card p-6 md:p-8">
+      <div className="panel">
         <Link href="/app/pacientes" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Voltar para pacientes
@@ -112,8 +112,7 @@ export default async function PacienteFichaPage({ params }: { params: Promise<{ 
         </div>
       </div>
 
-      <p className="section-label px-1">Blocos da ficha</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
         
         {/* Bloco 1: Resumo do caso */}
         <div className="lg:col-span-2 lg:row-span-2">

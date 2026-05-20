@@ -102,7 +102,7 @@ export function TarefasClient({
       )}
 
       {birthdays.length > 0 && (
-        <section className="bg-card border rounded-xl p-4" aria-label="Aniversários do mês">
+        <section className="panel py-4" aria-label="Aniversários do mês">
           <h2 className="text-sm font-medium mb-2">
             Aniversários em {monthName}
           </h2>
@@ -262,7 +262,7 @@ export function TarefasClient({
                 <p className="text-xs text-muted-foreground px-1">—</p>
               )}
               {tasksForColumn(col.key).map((t) => (
-                <div key={t.id} className="surface-card p-4 text-sm space-y-2 shadow-none">
+                <div key={t.id} className="rounded-lg border border-border bg-card p-3.5 text-sm space-y-2">
                   <p className="font-medium">{t.title}</p>
                   {t.patients?.full_name && (
                     <p className="text-muted-foreground text-xs">{t.patients.full_name}</p>

@@ -49,39 +49,25 @@
 }
 
 :root {
-  --background: oklch(0.985 0.002 350);
-  --foreground: oklch(0.22 0.01 350);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.01 350);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.01 350);
-  --primary: oklch(0.42 0.17 350);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0.01 350);
-  --secondary-foreground: oklch(0.28 0.02 350);
-  --muted: oklch(0.96 0.008 350);
-  --muted-foreground: oklch(0.5 0.02 350);
-  --accent: oklch(0.97 0.02 350);
-  --accent-foreground: oklch(0.35 0.08 350);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.91 0.01 350);
-  --input: oklch(0.93 0.01 350);
-  --ring: oklch(0.42 0.17 350);
-  --surface-accent: oklch(0.97 0.03 350);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --background: #fafafa;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #9d174d;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #404040;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #fdf2f8;
+  --accent-foreground: #831843;
+  --destructive: #dc2626;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #9d174d;
   --radius: 0.75rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -89,33 +75,13 @@
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @layer base {
@@ -129,26 +95,27 @@
     @apply font-sans;
   }
   .app-canvas {
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklch, var(--primary) 6%, transparent) 0%,
-      var(--background) 220px
-    );
+    @apply bg-background min-h-screen;
   }
   .surface-card {
-    @apply rounded-xl border border-border/80 bg-card shadow-sm;
+    @apply rounded-xl border border-border bg-card;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   }
-  .section-label {
-    @apply text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+  .panel {
+    @apply rounded-xl border border-border bg-card p-6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+  .block-title {
+    @apply text-sm font-medium text-muted-foreground mb-4;
   }
   .agenda-time {
-    @apply inline-flex min-w-[3.25rem] items-center justify-center rounded-lg bg-primary/10 px-2 py-1 text-sm font-semibold text-primary tabular-nums;
+    @apply text-sm font-semibold text-foreground tabular-nums min-w-[3rem];
   }
   .page-shell {
-    @apply p-4 md:p-8 max-w-4xl mx-auto;
+    @apply px-5 py-8 md:px-8 max-w-3xl mx-auto w-full;
   }
   .page-shell-wide {
-    @apply p-4 md:p-8 max-w-6xl mx-auto;
+    @apply px-5 py-8 md:px-8 max-w-5xl mx-auto w-full;
   }
   :focus-visible {
     outline: 2px solid var(--ring);
